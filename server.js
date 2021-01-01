@@ -1,56 +1,3 @@
-// const express = require('express')
-// const bodyParser = require('body-parser');
-// const app = express();
-// const port = process.env.PORT || 5000;
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// // app.get('/api/hello', (req, res) => {
-// //     res.send({message: 'Hello Express!'});
-
-// // });
-
-// app.get('/api/customers', (req, res) => {
-//   res.send([
-//     {
-//       'id': 1,
-//       'image': 'https://placeimg.com/64/64/1',
-//       'name': '김성우1',
-//       'birthday': '940401',
-//       'gender': '남자',
-//       'job': '대학생'
-//     },
-//     {
-//       'id': 2,
-//       'image': 'https://placeimg.com/64/64/2',
-//       'name': '김성우2',
-//       'birthday': '940401',
-//       'gender': '남자',
-//       'job': '대학생'
-//     },
-//     {
-//       'id': 3,
-//       'image': 'https://placeimg.com/64/64/3',
-//       'name': '김성우3',
-//       'birthday': '940401',
-//       'gender': '남자',
-//       'job': '대학생'
-//     },
-//     {
-//       'id': 4,
-//       'image': 'https://placeimg.com/64/64/4',
-//       'name': '김성우4',
-//       'birthday': '940401',
-//       'gender': '남자',
-//       'job': '대학생'
-//     }
-//   ]);
-// });
-
-// app.listen(port, () => console.log(`Litstening on port ${port}`)); 
-
-
 const fs = require('fs');
 
 const express = require('express')
@@ -81,7 +28,7 @@ connection.connect();
 
 app.get('/api/customers', (req, res) => {
   connection.query(
-    "SELECT * FROM CUSTOMER",
+    "SELECT * FROM CUSTOMER WHERE isDeleted = 0",
     (err, rows, fields) => {
       res.send(rows);
     }
@@ -92,7 +39,7 @@ app.use('/image', express.static('./upload'));
 
 app.post('/api/customers', upload.single('image'), (req, res) => {
 
-  let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)';
+  let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?, now(), 0)';
   let image = '/image/' + req.file.filename;
   let name = req.body.name;
   let birthday = req.body.birthday;
@@ -105,6 +52,15 @@ app.post('/api/customers', upload.single('image'), (req, res) => {
       res.send(rows);
     }
   )
+});
+
+app.delete('/api/customers/:id', (req, res) => {
+  let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id = ?';
+  let params = [req.params.id];
+  connection.query(sql, params,
+    (err, rows, field) => {
+      res.send(rows);
+    })
 });
 
 
