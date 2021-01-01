@@ -1,6 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-# database
+/upload
+
+/database2.json
 /database.json
+/database2.json
+
 
 # dependencies
 /node_modules
