@@ -122,7 +122,7 @@ class App extends Component {
                     key={c.id}
                     id={c.id}
                     image={c.image}
-                    name={c.NAME}
+                    name={c.name}
                     birthday={c.birthday}
                     gender={c.gender}
                     job={c.job}
@@ -145,3 +145,5 @@ class App extends Component {
 }
 
 export default withStyles(styles)(App);
+
+

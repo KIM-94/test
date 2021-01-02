@@ -10,7 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const data = fs.readFileSync('./database2.json');
 const conf = JSON.parse(data);
-const mysql = require('mysql');
+// const mysql = require('mysql');  // ternux mysql (npm install --save mysql) - mysql  Ver 15.1 Distrib 10.5.8-MariaDB, for Android (aarch64) using  EditLine wrapper
+const mysql = require('mysql2');    // docker mysql (npm install --save mysql2) - mysql  Ver 8.0.17 for Linux on x86_64 (MySQL Community Server - GPL)
+
 
 const multer = require('multer');
 const upload = multer({ dest: './upload' })
